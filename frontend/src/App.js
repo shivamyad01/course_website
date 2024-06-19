@@ -42,7 +42,7 @@ const App = () => {
           <Route path="/buy/:id" element={<CourseDetail onCourseSelect={handleOpenBillingModal} />} />
           <Route path="/purchase" element={<Purchase courses={purchasedCourses} />} />
           <Route path="/purchase/:id" element={<Purchase courses={purchasedCourses} />} /> {/* Route for individual purchased course */}
-          <Route path="/purchase/videos" element={<Videos purchasedCourses={purchasedCourses} />} /> {/* Route for videos component */}
+          <Route path="/purchase/:id/videos" element={<Videos purchasedCourses={purchasedCourses} />} /> {/* Route for videos component */}
         </Routes>
 
         {selectedCourse && (

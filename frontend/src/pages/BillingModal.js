@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate from react
 
 const BillingModal = ({ course, open, onClose, onPurchase }) => {
   const navigate = useNavigate(); // Initialize useNavigate
-
   const discount = 10; // Assume a 10% discount for this example
   const finalPrice = course.price - (course.price * discount) / 100;
 

@@ -3,6 +3,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate to programmatically navigate
 import { courses } from '../coursesData';
+import BillingModal from './BillingModal'; // Import BillingModal component
 
 const CourseDetail = ({ onCourseSelect }) => {
   const { id } = useParams();
@@ -15,8 +16,8 @@ const CourseDetail = ({ onCourseSelect }) => {
   }
 
   const handleBuyNow = () => {
-    onCourseSelect(course);
-    navigate(`/buy/${id}`); // Navigate to the buy route for this course
+    onCourseSelect(course); // Trigger opening of BillingModal with selected course
+    navigate(`/buy/${id}`); // Navigate to the buy route for this course (optional)
   };
 
   return (
@@ -31,6 +32,8 @@ const CourseDetail = ({ onCourseSelect }) => {
       >
         Buy Now
       </button>
+
+     
     </div>
   );
 };
