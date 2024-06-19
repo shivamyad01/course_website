@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
+import { loginRequest, loginSuccess, loginFailure } from './redux/userSlice';
 
 const CombinedAuth = ({ onClose }) => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -18,6 +21,8 @@ const CombinedAuth = ({ onClose }) => {
     e.preventDefault();
 
     const { username, email, password, isLogin } = formData;
+
+    dispatch(loginRequest());
 
     try {
       let url;
@@ -38,6 +43,9 @@ const CombinedAuth = ({ onClose }) => {
 
       if (isLogin) {
         localStorage.setItem('token', response.data.token);
+        dispatch(loginSuccess(response.data.user));
+        // Close the login page upon successful login
+        onClose();
         // Optionally redirect or handle further actions after successful login
       } else {
         // Switch to login mode on successful registration
@@ -46,6 +54,7 @@ const CombinedAuth = ({ onClose }) => {
     } catch (error) {
       console.error(`${isLogin ? 'Login' : 'Registration'} failed:`, error.response.data);
       toast.error(`${isLogin ? 'Login' : 'Registration'} failed`);
+      dispatch(loginFailure(error.response.data));
     }
   };
 

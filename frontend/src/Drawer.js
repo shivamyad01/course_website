@@ -31,23 +31,23 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from './redux/userSlice';
+
 const drawerWidth = 240;
 
 export default function ClippedDrawer() {
   const [authOpen, setAuthOpen] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = React.useState(null); // null or anchor element
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false); // Track login status
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const isLoggedIn = useSelector((state) => state.user.user !== null);
+  const dispatch = useDispatch();
+
   const handleLoginClick = () => {
     setAuthOpen(true);
-  };
-
-  const handleSuccessfulLogin = () => {
-    setIsLoggedIn(true);
-    setAuthOpen(false); // Close login dialog if login successful
   };
 
   const handleCloseAuth = () => {
@@ -64,6 +64,12 @@ export default function ClippedDrawer() {
 
   const handleAccountMenuClose = () => {
     setAccountMenuOpen(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // Optional: remove token from local storage
+    dispatch(logout());
+    handleAccountMenuClose();
   };
 
   const drawer = (
@@ -184,11 +190,11 @@ export default function ClippedDrawer() {
       >
         <MenuItem onClick={handleAccountMenuClose}>Profile</MenuItem>
         <MenuItem onClick={handleAccountMenuClose}>Settings</MenuItem>
-        <MenuItem onClick={handleAccountMenuClose}>Logout</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
 
       {/* CombinedAuth Component */}
-      {authOpen && <CombinedAuth onClose={handleCloseAuth} onSuccess={handleSuccessfulLogin} />}
+      {authOpen && <CombinedAuth onClose={handleCloseAuth} />}
     </Box>
   );
 }
